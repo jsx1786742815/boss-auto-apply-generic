@@ -1,0 +1,10 @@
+interface:
+  display_name: "BOSS 直聘自动投递"
+  short_description: "首次问答收集求职偏好后，通过本机 Chrome CDP 筛选、评分并自动投递 BOSS 直聘岗位（任意行业/城市）"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
+  brand_color: "#00A6A6"
+  default_prompt: "Use $bosszhipin-auto-apply to collect my job preferences or validate my current BOSS job search before applying."
+
+policy:
+  allow_implicit_invocation: true

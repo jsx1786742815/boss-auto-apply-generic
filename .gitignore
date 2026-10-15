@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+data/
+*.db
+apply_log*.txt
+font_*.woff2
+font_digits.png
+
+# 用户个人配置 —— 含求职方向偏好，不应提交
+profile.json
+profile-*.json

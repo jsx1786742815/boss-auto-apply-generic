@@ -1,0 +1,30 @@
+{
+  "_description": "销售 / 商务方向（注意：默认过滤链会拦掉销售话术岗，用此模板需把 score.negative 里的销售相关词删掉）",
+  "city": "上海",
+  "keywords": [
+    "销售代表", "大客户销售", "渠道销售", "商务拓展",
+    "BD经理", "客户经理", "销售经理", "区域销售"
+  ],
+  "max_pages": 3,
+  "max_apply": 50,
+  "daily_limit": 100,
+  "score_threshold": 40,
+  "salary_min_k": 6,
+  "salary_max_k": 60,
+  "salary_floor_k": 0,
+  "apply_outsourcing": true,
+  "allow_offline_boss": true,
+  "score": {
+    "base": 45,
+    "strong_positive": [
+      "大客户销售", "渠道销售", "商务拓展", "bd经理", "客户经理", "销售经理",
+      "区域销售", "面销", "to b销售", "tob销售", "ka销售", "商务谈判", "客户开发"
+    ],
+    "weak_positive": ["销售", "客户", "渠道", "商务", "业绩", "签约", "拓展", "谈判"],
+    "negative": ["实习", "应届", "无经验", "客服", "java", "php", "c++", "运维", "测试", "前端", "ui设计", "讲师"]
+  },
+  "blacklist": [],
+  "outsource_companies": [],
+  "exclude_keywords": [],
+  "greeting": ""
+}

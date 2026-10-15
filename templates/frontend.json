@@ -1,0 +1,34 @@
+{
+  "_description": "前端 / 全栈开发方向",
+  "city": "杭州",
+  "keywords": [
+    "前端开发", "React开发", "Vue开发", "Web前端", "全栈开发", "前端工程师", "H5开发", "小程序开发"
+  ],
+  "max_pages": 3,
+  "max_apply": 50,
+  "daily_limit": 100,
+  "score_threshold": 50,
+  "salary_min_k": 12,
+  "salary_max_k": 45,
+  "salary_floor_k": 0,
+  "apply_outsourcing": true,
+  "allow_offline_boss": true,
+  "score": {
+    "base": 45,
+    "strong_positive": [
+      "前端开发", "web前端", "react", "vue", "typescript", "javascript",
+      "node.js", "nodejs", "webpack", "vite", "next.js", "nuxt",
+      "小程序", "h5", "css", "html", "前端工程化", "全栈"
+    ],
+    "weak_positive": ["前端", "es6", "sass", "less", "git", "组件", "性能优化", "工程化"],
+    "negative": [
+      "实习", "应届", "无经验", "销售", "客服", "电话销售",
+      "java", "php", "c++", "golang", "运维", "测试", "算法", "ui设计",
+      "嵌入式", "单片机", "硬件", "讲师"
+    ]
+  },
+  "blacklist": [],
+  "outsource_companies": [],
+  "exclude_keywords": ["高提成", "销冠", "电话销售", "客户经理", "地推", "培训讲师"],
+  "greeting": ""
+}

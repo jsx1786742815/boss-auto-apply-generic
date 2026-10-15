@@ -1,0 +1,34 @@
+{
+  "_description": "产品经理 / 产品方向",
+  "city": "深圳",
+  "keywords": [
+    "产品经理", "B端产品经理", "高级产品经理", "产品策划", "需求分析",
+    "SaaS产品", "数据产品经理", "AI产品经理"
+  ],
+  "max_pages": 3,
+  "max_apply": 50,
+  "daily_limit": 100,
+  "score_threshold": 50,
+  "salary_min_k": 14,
+  "salary_max_k": 45,
+  "salary_floor_k": 0,
+  "apply_outsourcing": true,
+  "allow_offline_boss": true,
+  "score": {
+    "base": 45,
+    "strong_positive": [
+      "产品经理", "产品设计", "需求分析", "原型", "axure", "prd", "产品规划",
+      "b端", "b 端", "saas", "数据产品", "ai产品", "产品策划", "用户研究",
+      "竞品分析", "产品运营", "商业化"
+    ],
+    "weak_positive": ["产品", "需求", "axure", "visio", "xmind", "figma", "数据分析", "项目管理"],
+    "negative": [
+      "实习", "应届", "无经验", "销售", "客服", "电话销售", "地推",
+      "java", "php", "c++", "运维", "测试", "ui设计", "平面设计", "讲师"
+    ]
+  },
+  "blacklist": [],
+  "outsource_companies": [],
+  "exclude_keywords": ["高提成", "销冠", "无责底薪", "电话销售", "客户经理", "地推", "渠道招商", "保险代理", "房产中介"],
+  "greeting": ""
+}
