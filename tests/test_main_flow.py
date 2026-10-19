@@ -6,6 +6,7 @@
 看不到本该看到的引导话术。
 """
 import os
+import sqlite3
 import sys
 import unittest
 from pathlib import Path
@@ -18,6 +19,19 @@ sys.path.insert(0, str(SCRIPTS))
 
 
 import boss_auto_apply_cdp as B  # noqa: E402
+
+
+def memory_db():
+    """内存库替身：避免单测在仓库里生成 data/applications.db。"""
+    conn = sqlite3.connect(':memory:')
+    conn.execute('''CREATE TABLE IF NOT EXISTS applications (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        job_id TEXT, company TEXT, position TEXT, salary TEXT,
+        apply_date TEXT DEFAULT (date('now')),
+        score INTEGER DEFAULT 0, greeting TEXT, UNIQUE(job_id, company))''')
+    conn.commit()
+    return conn
+
 
 
 class MainStartupOrderTests(unittest.TestCase):
@@ -42,11 +56,12 @@ class MainStartupOrderTests(unittest.TestCase):
         profile = str(ROOT / 'templates' / 'frontend.json')
 
         with mock.patch.dict(os.environ, {'BOSS_PROFILE': profile}):
-            with mock.patch.object(B, 'get_ws_url',
-                                   side_effect=ConnectionRefusedError(10061, 'refused')):
-                with mock.patch('builtins.print'):
-                    # 不应抛出任何异常
-                    B.main()
+            with mock.patch.object(B, 'init_db', side_effect=memory_db):
+                with mock.patch.object(B, 'get_ws_url',
+                                       side_effect=ConnectionRefusedError(10061, 'refused')):
+                    with mock.patch('builtins.print'):
+                        # 不应抛出任何异常
+                        B.main()
 
     def test_valid_profile_reaches_chrome_connection_step(self):
         """配置合法时应继续走到连接 Chrome 这一步。"""
@@ -58,9 +73,10 @@ class MainStartupOrderTests(unittest.TestCase):
             raise ConnectionRefusedError(10061, 'refused')
 
         with mock.patch.dict(os.environ, {'BOSS_PROFILE': profile}):
-            with mock.patch.object(B, 'get_ws_url', side_effect=fake_ws):
-                with mock.patch('builtins.print'):
-                    B.main()
+            with mock.patch.object(B, 'init_db', side_effect=memory_db):
+                with mock.patch.object(B, 'get_ws_url', side_effect=fake_ws):
+                    with mock.patch('builtins.print'):
+                        B.main()
 
         self.assertTrue(reached['ws'], '配置合法时应当尝试连接 Chrome CDP')
 
