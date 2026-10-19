@@ -730,23 +730,21 @@ def main():
     print("=" * 60)
     t0 = datetime.now()
 
-    conn = init_db()
-    ws_url = get_ws_url()
-    cdp = CDP(ws_url)
-    print(f"Connected: {cdp.eval('document.title')}")
-
     # v23 通用化：所有个人化配置（关键词/城市/薪资/评分词表/黑名单）来自
     # profile.json。缺失或非法时 config.load_profile 会抛出带引导话术的
     # ProfileError —— 直接打印给用户看，不静默套用别的行业默认值。
+    #
+    # 注意顺序：配置检查必须排在连接 Chrome CDP **之前**。否则首次使用的用户
+    # 若还没启动 CDP Chrome，会先撞上 get_ws_url() 的连接异常，根本看不到
+    # 首次引导话术 —— 那正是本 skill 最需要传达信息的一刻。
     try:
         prof = load_profile()
     except ProfileError as exc:
         print("\n" + "!" * 60)
-        print("!! 未找到可用的个人配置")
+        print("!! 未找到可用的个人配置 —— 本轮不运行")
         print("!" * 60)
         print(f"{exc}")
         print("!" * 60)
-        conn.close()
         return
 
     configure(prof)
@@ -764,6 +762,30 @@ def main():
     print(f"配置来源: {profile_path()}")
     print(f"城市: {prof['city']} ({city_code}) | 关键词 {len(keywords)} 个 | "
           f"薪资 {min_salary_k + 1}~{max_salary_k}K | 单轮上限 {max_apply} | 阈值 {score_threshold}")
+
+    # 配置就绪后才连接 CDP Chrome
+    conn = init_db()
+    try:
+        ws_url = get_ws_url()
+        cdp = CDP(ws_url)
+        title = cdp.eval('document.title')
+    except Exception as exc:
+        # 最常见的原因就是没启动隔离 Chrome。给一条能直接照做的提示，
+        # 不要让用户对着一屏 Python traceback 猜。
+        print("\n" + "!" * 60)
+        print("!! 连不上 Chrome 调试端口 127.0.0.1:9223 —— 本轮不运行")
+        print("!" * 60)
+        print(f"!! 原因：{type(exc).__name__}: {exc}")
+        print("!!")
+        print("!! 处理：先在另一个终端启动隔离 Chrome（保持它开着）：")
+        print("!!     python scripts/start_cdp_v2.py")
+        print("!! 首次使用还需在该窗口里登录 BOSS 直聘：")
+        print("!!     python tools/wait_login.py --timeout 1800")
+        print("!! 然后重跑本命令。")
+        print("!" * 60)
+        conn.close()
+        return
+    print(f"Connected: {title}")
 
     _c = conn.cursor()
     _c.execute("SELECT COUNT(*) FROM applications WHERE apply_date=date('now','localtime')")
